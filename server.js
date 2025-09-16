@@ -355,8 +355,15 @@ process.on('SIGTERM', async () => {
 });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`🌐 PRAGATI API Server running on port ${port}`);
-  console.log(`📊 Health check: http://localhost:${port}/api/health`);
-  console.log(`📈 Statistics: http://localhost:${port}/api/stats`);
-});
+
+// For Vercel, export the app instead of listening
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`🌐 PRAGATI API Server running on port ${port}`);
+    console.log(`📊 Health check: http://localhost:${port}/api/health`);
+    console.log(`📈 Statistics: http://localhost:${port}/api/stats`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
